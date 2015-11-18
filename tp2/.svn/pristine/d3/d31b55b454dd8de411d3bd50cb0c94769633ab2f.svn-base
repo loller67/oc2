@@ -1,0 +1,49 @@
+\relax 
+\catcode `"\active 
+\catcode `<\active 
+\catcode `>\active 
+\@nameuse{es@quoting}
+\catcode 95\active
+\select@language{spanish}
+\@writefile{toc}{\select@language{spanish}}
+\@writefile{lof}{\select@language{spanish}}
+\@writefile{lot}{\select@language{spanish}}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introducci\IeC {\'o}n}{3}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Desarrollo}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Blur}{4}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.1}Implementacion 1}{4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Desarrollo de Blur-ASM1.}}{4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Desarrollo de Blur-ASM1.}}{4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Desarrollo de Blur-ASM1.}}{5}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.2}Implementacion 2}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Merge}{7}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.1}Implementacion 1}{7}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Desarrollo de Merge-ASM1.}}{7}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Desarrollo de Merge-ASM1.}}{7}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.2}Implementacion 2}{7}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Desarrollo de Merge-ASM2.}}{8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Desarrollo de Merge-ASM2.}}{8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Desarrollo de Merge-ASM2.}}{9}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}HSL}{10}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.1}Implementacion 1}{10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Desarrollo de HSL-ASM1.}}{10}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.2}Implementacion 2}{10}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.3}Implementacion 2}{10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Desarrollo de HSL-ASM1.}}{11}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Resultados}{12}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Consideraciones sobre los tests}{12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Codigo para testear rendimiento de Blur.}}{12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Extracto de codigo modificado de run_blur en run.c.}}{12}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Experimento 1}{13}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Tablas de Resultados para cada Implementaci\IeC {\'o}n, 1000 iteraciones.}}{13}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Gr\IeC {\'a}fico de Barras, Comparaci\IeC {\'o}n C-ASM, Experimento 1.}}{14}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Experimento 2}{15}}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Gr\IeC {\'a}fico de L\IeC {\'\i }neas, Experimento 2.}}{15}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Experimento 3}{16}}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Filtro Blur, Experimento 3.}}{16}}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Filtro Merge, Experimento 3.}}{16}}
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces Filtro HSL, Experimento 3.}}{17}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Experimento 4}{17}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Conclusiones}{18}}
+\@writefile{toc}{\contentsline {paragraph}{}{18}}
+\@writefile{toc}{\contentsline {paragraph}{}{18}}

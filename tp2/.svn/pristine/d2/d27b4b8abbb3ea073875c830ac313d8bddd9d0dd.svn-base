@@ -1,0 +1,57 @@
+\subsubsection{Implementacion 1}
+
+\textbf{Explicacion Assembler}
+
+En esta implementación realizamos la implementación del filtro HSL, utilizando funciones escritas en C para la transformación de formatos del pixel.
+
+Para realizar esto, guardamos en el registro XMM0 los valores pasados como parámetro a la función corresponiente al dato a sumar a cada componente del pixel. Además, creamos un vector en donde vamos a guardar el resultado de llamar a la función para transformar un pixel a formato HSL (utilizando una función C ya implementada), y guardamos en los registros XMM8 y XMM10 los datos para comparar las componentes una vez realizada la suma y así corroborar que los valores del resultado estén dentro de los valores posibles del formato.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=90mm]{imagenes/hsl/hsl1_1.png}
+\caption{***}
+\end{figure}
+
+Una vez realizados estos pasos previos, podemos realizar con mas facilidad las operaciones debidas a los pixeles iterando uno a uno todos los pixeles de la imagen.
+
+En cada iteración comenzamos transformando las componentes del pixel rgb a componentes HSL con la función implementada en C correspondiente, usando el vector creado por nosotros como contenedor del resultado.
+
+Una vez obtenido este resultado, lo cargamos en el registro XMM1 y le sumamos los datos correspondientes, que previamente habiamos guardado en XMM0. Luego, utilizando los registros XMM8 y XMM10 (los cuales tenian nuestros datos para realizar comparaciones), controlamos que los valores obtenidos sean validos y correctos, y en caso contrario corregirlos de la manera correspondiente.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=90mm]{imagenes/hsl/hsl1_2.png}
+\caption{***}
+\end{figure}
+
+Una vez finalizadas estas operaciones, guardamos el resultado en nuestro vector y procedemos a volver a convertir las componentes HSL a componentes rgb utilizando la funcion C correspondiente, la cual guarda el resultado final del pixel en el dicho vector.
+
+Una vez terminadas todas las iteraciones, liberamos la memoria correspondiente a nuestro vector y terminamos la función.
+
+\subsubsection{Implementacion 2}
+
+\textbf{Explicacion Assembler}
+
+En esta implementación realizamos el filtro HSL completamente en codigo assembler.
+
+Para eso, realizamos la misma implementación de suma que la primera implementación del filtro explocada anteriormente, utilizando un vector temporal para almacenar las componentes del pixel en formato HSL y los registros XMM8, XMM10, XMM14 y Xmm15 (estos últimos dos agregados en esta implementación) para contener los datos para realizar comparaciones y operaciones para la conversión y corregir los valores si se van del rango admisible.
+
+%\begin{figure}[ht!]
+%\centering
+%\includegraphics[width=90mm]{imagenes/hsl/hsl2_1.png}
+%\caption{***}
+%\end{figure}
+
+Para realizar la conversión del formato rgb al formato HSL, transformamos cada componente de byte a doubleword y las guardamos en el registro XMM0, los convertimos a valores en punto flotante y guardamos la componente de transparencia, dado que no se modifica, en el vector. Continuamos por obtener las componentes en formato HSL.
+
+Calculamos el máximo y el mínimo entre las componentes rgb del pixel y con estos valores procedemos a calcular la matiz (componente H), luego la luminosidad (componente L) y finalmente la saturación (componente S). Los resultados de estas operaciones son guardados en el vector.
+
+****EXPLICAMOS COMO LO HACEMOS? SI NO EXPLICAMOS SIENTO QUE FALTA Y SI LO EXPLICAMOS QUEDA DEMASIADO*****
+
+Para realizar la conversión del formato HSL al formato rgb, necesitamos obtener algunos valores utilizando las fórmulas provistas por la cátedra, C, X y M, que los guardaremos en las partes bajas de XMM4, XMM5 y XMM6 respectivamente. A los valores C y X, junto con la componenten de trasnparencia A guardada previamente en nuestro vector, los copiamos al registro XMM4y XMM5  de la forma que muestra la imagen.
+
+%\begin{figure}[ht!]
+%\centering
+%\includegraphics[width=90mm]{imagenes/hsl/hsl2_2.png}
+%\caption{******INSERTE IMAGEN DE REGISTROS y resultado ; xmm4 = XMM5 =  | C | 0 | X | A |*********}
+%\end{figure}

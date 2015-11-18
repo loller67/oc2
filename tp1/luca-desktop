@@ -1,0 +1,486 @@
+
+; ESTUDIANTE
+	global estudianteCrear
+	global estudianteBorrar
+	global menorEstudiante
+	global estudianteConFormato
+	global estudianteImprimir
+	
+; ALTALISTA y NODO
+	global nodoCrear
+	global nodoBorrar
+	global altaListaCrear
+	global altaListaBorrar
+	global altaListaImprimir
+
+; AVANZADAS
+	global edadMedia
+	global insertarOrdenado
+	global filtrarAltaLista
+	global string_longitud
+	global string_menor
+	global string_copiar
+
+; YA IMPLEMENTADAS EN C
+	extern string_iguales
+	extern insertarAtras
+	extern malloc
+	extern free
+	
+
+; /** DEFINES **/    >> SE RECOMIENDA COMPLETAR LOS DEFINES CON LOS VALORES CORRECTOS
+	%define NULL 	0
+	%define TRUE 	1
+	%define FALSE 	0
+
+	%define ALTALISTA_SIZE     		16
+	%define OFFSET_PRIMERO 			0
+	%define OFFSET_ULTIMO  			8
+
+	%define NODO_SIZE     			24
+	%define OFFSET_SIGUIENTE   		0
+	%define OFFSET_ANTERIOR   		8
+	%define OFFSET_DATO 			16
+
+	%define ESTUDIANTE_SIZE  		20
+	%define OFFSET_NOMBRE 			0
+	%define OFFSET_GRUPO  			8
+	%define OFFSET_EDAD 			16
+
+
+section .rodata
+
+
+section .data
+
+
+section .text
+
+;/** FUNCIONES OBLIGATORIAS DE ESTUDIANTE **/    >> PUEDEN CREAR LAS FUNCIONES AUXILIARES QUE CREAN CONVENIENTES
+;---------------------------------------------------------------------------------------------------------------
+
+	; estudiante *estudianteCrear( char *nombre, char *grupo, unsigned int edad );
+	estudianteCrear:
+	; rdi <- nombre rsi <- grupo rdx <- edad
+		; COMPLETAR AQUI EL CODIGO
+
+		push rbp
+		mov rbp, rsp
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+		mov r12,rdi
+		mov r13,rsi
+		mov r14,rdx
+		call string_copiar
+		mov r15,rax
+		mov rdi, ESTUDIANTE_SIZE
+		call malloc; pido memoria
+		
+		mov  [rax+ OFFSET_NOMBRE],r12;
+		mov  [rax+ OFFSET_GRUPO], r13;
+		mov  [rax+ OFFSET_EDAD], r14;
+		
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		pop rbp
+		ret
+
+	; void estudianteBorrar( estudiante *e );
+	estudianteBorrar:
+		; rdi <- e
+		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+		
+		mov r12, [rdi + OFFSET_GRUPO]; borro grupo
+		mov r13, rdi
+		mov rdi,r12
+		call free
+		mov rdi, [r13+OFFSET_NOMBRE]; borro nombre
+		call free
+		mov rdi,r13; borro struct
+		call free
+		
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		pop rbp
+		ret
+
+
+	; bool menorEstudiante( estudiante *e1, estudiante *e2 ){
+	menorEstudiante:
+		; rdi<- e1, rsi <-e2
+		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+		
+		
+
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		pop rbp
+		ret
+
+
+	; void estudianteConFormato( estudiante *e, tipoFuncionModificarString f )
+	estudianteConFormato:
+		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		pop rbp
+		ret
+
+	
+	; void estudianteImprimir( estudiante *e, FILE *file )
+	estudianteImprimir:
+		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		pop rbp
+		ret
+		
+
+
+;/** FUNCIONES DE ALTALISTA Y NODO **/    >> PUEDEN CREAR LAS FUNCIONES AUXILIARES QUE CREAN CONVENIENTES
+;--------------------------------------------------------------------------------------------------------
+
+	; nodo *nodoCrear( void *dato )
+	nodoCrear:
+		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		pop rbp
+		ret
+	; void nodoBorrar( nodo *n, tipoFuncionBorrarDato f )
+	nodoBorrar:
+		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		pop rbp
+		ret
+	; altaLista *altaListaCrear( void )
+	altaListaCrear:
+		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		pop rbp
+		ret
+	; void altaListaBorrar( altaLista *l, tipoFuncionBorrarDato f )
+	altaListaBorrar:
+		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		pop rbp
+		ret
+	; void altaListaImprimir( altaLista *l, char *archivo, tipoFuncionImprimirDato f )
+	altaListaImprimir:
+		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		pop rbp
+		ret
+
+;/** FUNCIONES AVANZADAS **/    >> PUEDEN CREAR LAS FUNCIONES AUXILIARES QUE CREAN CONVENIENTES
+;----------------------------------------------------------------------------------------------
+
+	; float edadMedia( altaLista *l )
+	edadMedia:
+		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		pop rbp
+		ret
+
+
+	; void insertarOrdenado( altaLista *l, void *dato, tipoFuncionCompararDato f )
+	insertarOrdenado:
+		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		pop rbp
+		ret
+
+
+	; void filtrarAltaLista( altaLista *l, tipoFuncionCompararDato f, void *datoCmp )
+	filtrarAltaLista:
+		
+		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+		
+		
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		pop rbp
+		ret
+		
+	;AUXILIARES
+	;unsigned char string_longitud( char *s );
+	; COMPLETAR AQUI EL CODIGO
+		string_longitud:
+		push rbp
+		mov rbp, rsp
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+				
+		
+		mov r13, rdi; guardo el puntero
+
+		xor r12,r12; seteo contador en 0
+		
+		.ciclo: 
+			cmp byte [r13], NULL
+			je .fin
+			add r13, 1	
+			inc r12
+			jmp .ciclo
+
+		.fin:
+
+		mov rax,r12
+		
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		pop rbp
+		ret
+
+	;char *string_copiar( char *s );
+	;s<-rdi
+	string_copiar:
+	; COMPLETAR AQUI EL CODIGO
+		
+		push rbp
+		mov rbp, rsp
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+		
+		call string_longitud
+		mov r12, rdi
+		lea rdi, [rax+1]; muevo el tamaño+1 para pedir memoria
+		call malloc; en rax tengo el puntero a la primera posicion de memoria
+		mov r14,rax
+			
+		.ciclo:
+		cmp byte [r12], NULL
+		je .fin
+		mov r15, [r12]
+		mov [rax], r15
+		inc r12
+		inc rax
+		jmp .ciclo		
+		
+		.fin:
+		mov rax, r14 
+		
+
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		pop rbp
+		ret
+	;bool string_menor( char *s1, char *s2 );
+	; s1<- rdi s2<- rsi
+	; COMPLETAR AQUI EL CODIGO
+		string_menor:
+		push rbp
+		mov rbp, rsp
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+		mov r12, rdi; salvo puntero a la primer letra primer palabra
+		mov r13, rsi; salvo puntero a la primer letra segunda palabra
+		call string_iguales; me fijo si son iguales
+		cmp byte rax, TRUE; si son iguales devuelvo false
+		je .False
+		
+		.loop:
+			cmp byte [r12], NULL; primer palabra NULL
+			je .True
+			cmp byte [r13], NULL ; segunda palabra NULL y primer palabra NO NULL
+			je .False
+			mov  al, [r12]
+			mov  bl, [r13]
+			cmp byte al, bl; las dos distintas de NULL
+			je .incrementar
+			jl .True
+			jmp .False
+
+		
+		.incrementar:
+			inc r12
+			inc r13
+			jmp .loop
+		.False:
+			mov rax, FALSE
+			jmp .pop
+			
+		.True:
+			mov rax, TRUE
+			jmp .pop
+
+		.pop:
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		pop rbp
+		ret

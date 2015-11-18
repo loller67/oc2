@@ -1,0 +1,30 @@
+\subsection{Consideraciones}
+
+Consideraciones sobre tests - podada de variables, promedios, desvio estandar, etc.
+Instrucciones utilizadas. Bibliografia.
+
+Comparaciones C-ASM en general.
+Especificar PC con la que trabajamos, y resultados generales.
+
+Comparaciones accesos a Memoria. Accesos alineados y desalineados.
+Comparaciones enteros-float.
+
+\subsection{Experimento 1}
+
+Comparacion con varios tamanios de una foto dada (lena).
+
+\subsection{Experimento 2}
+
+Comparacion con fotos de distintos colores e igual tamanio. (fotos todas de un color, etc.)
+
+\subsection{Experimento 3}
+
+Comparacion con menos saltos condicionales. (Fotos alargadas vs fotos cuadradas)
+
+\subsection{Experimento 4}
+
+Comparacion con resultados en distintas PC y sus procesadores, con una foto dada (lena).
+
+\subsection{Experimento 5}
+
+Comparacion con distintos niveles de optimizacion de C, con una foto dada (lena).

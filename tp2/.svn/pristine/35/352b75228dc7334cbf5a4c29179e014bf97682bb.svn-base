@@ -1,0 +1,127 @@
+\subsubsection{Implementacion 1}
+
+\textbf{Explicación assembler}
+
+En esta implementación modificamos de a un pixel a la vez, comenzando a recorrer la primer fila de la matriz que representa a la imagen hasta que esta se acabe y luego repetir el proceso con la fila siguiente hasta alcanzar el borde cuyos píxeles no son modificados. Para calcular los valores resultantes de cada componente del pixel, mantenemos en cada iteración un puntero al primero de los 9 pixeles necesarios para el cálculo correspondiente al filtro Blur (ver enunciado).
+
+Para poder calcular correctamente los pixeles, debemos tener cuidado de no utilizar el valor modificado de los pixeles vecinos que utilizamos para realizar las cuentas.
+
+Para lograr lo dicho anteriormente, al comienzo del código creamos un vector del tamaño equivalente a una fila de la imagen, que lo vamos a utilizar para guardar temporalmente n pixeles, siendo n la cantidad de pixeles que tiene una fila.
+
+Este vector lo inicializamos con los píxeles de la primera fila de la imagen. Aunque esto no es necesario, de esta manera nos evitamos realizar el caso base correspondiente a la primera fila de la imagen, ya que ésta no se modifica.
+
+Nuestra función opera de la siguiente manera:
+Hay dos ciclos, uno dentro del otro, en donde el ciclo externo itera sobre las filas y el ciclo interno lo hace sobre las columnas.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=110mm]{imagenes/blur/blur1-figura1.png}
+\caption{Blur-Implementacion 1}
+\end{figure}
+
+1) En el ciclo interno guardamos en 3 registros xmm, en nuestro caso xmm0, xmm2 y xmm4 los primeros cuatro píxeles consecutivos de 3 filas contiguas. De estos 4 pixeles vamos a necesitar solamente 3, de forma que los pixeles que utilicemos sean los pixeles vecinos al pixel que vamos a modificar y a si mismo.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=70mm]{imagenes/blur/blur1-figura2.png}
+\caption{Blur-Implementacion 1}
+\end{figure}
+
+2) Una vez que los pixeles de la imagen están en los registros, modificamos el pixel de la imagen ubicado en la menor posición intercambiandolo con el pixel correspondiente del vector creado previamente, que contiene el pixel ya modificado correspondiente a esa posicion de memoria.
+
+3) Ahora que ya utilizamos la posicion del vector para actualizar la imagen, guardamos el resultado que habiamos obtenido en la iteracion anterior (que guardamos en EAX) en el vector. En caso que sea el primer pixel de la fila, antes de entrar al ciclo de la nueva fila se guarda en EAX el pixel correspondiente.
+
+4) Realizamos las operaciones necesarias con los datos y guardamos el resultado (el pixel4 modificado) en EAX.
+Para sumar las componentes de los píxeles sin que ocurra overflow en nuestra representacion, duplicamos el tamaño de cada una de ellos expandiendo los componentes de los pixeles de byte a word. Dejamos dos píxeles en el registro en el que estaban (con el tamaño modificado) y los otros dos en otro registro xmm. 
+Luego realizamos suma de words entre los registros, el resultado lo guardamos en xmm0. 
+El siguiente paso es  shiftear a la derecha los registros xmm0, xmm2 y xmm4 y los sumamos para asi obtener en la parte baja del registro xmm0 la suma de los 9 pixeles involucrados.
+Duplicamos el tamaño de cada componente a 32bits para convertir a float y dividir por nueve cada uno de ellos. Una vez concluído esto, volvemos a convertir las componentes a enteros, y volvemos a empaquetarlas a su tamaño original, de forma que quede el pixel resultante en la parte más baja del registro xmm0.
+El resultado obtenido lo guardo en un registro para poder ubicarlo en el vector en la iteración siguiente. No lo podemos guardar en el vector ahora porque todavia necesitamos usar el valor correspondiente a esa posicion en la proxima iteracion. \b(Ver Figura 3)
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=100mm]{imagenes/blur/blur1-figura3.png}
+\caption{Blur-Implementacion 1}
+\end{figure}
+
+Caso Borde: Antes de volver a iterar en el ciclo externo, se realiza el caso borde de la fila, que es análogo a una iteración del ciclo interno. Cuando se llega a la ultima columna de pixeles que se debe modificar, retrocedemos con el puntero al pixel anterior y tomamos los ultimos 3 pixeles de cada registro en vez de los 3 primeros. (Si no hariamos esto, en la ultima fila intentariamos acceder a memoria que no es nuestra).
+Nota: Al finalizar el caso borde actualizamos el anteultimo pixel de la fila y cargamos el resultado directo al vector, no hace falta guardarlo en EAX pues 
+
+Una vez finalizado esto, realizamos las operaciones necesarias para poder realizar la siguiente iteración del ciclo externo.
+
+Al finalizar el ciclo de las filas, actualizamos la anteultima fila con los valores modificados, guardados en el vector durante la ultima iteracion del ciclo.
+
+
+\subsubsection{Implementacion 2}
+
+\textbf{Explicación assembler}
+
+En esta implementación modificamos la imagen de a cuatro pixeles por vez, considerando a la imagen como una matriz de píxeles. El orden que seguimos para procesar los grupos de píxeles es tomando los primeros cuatro píxeles de la imagen (sin contar los bordes), procesarlos, y hacer lo mismo con los siguientes cuatro pixeles hasta que llegamos al final de la fila, donde debemos procesar solo dos píxeles. Luego cambiamos de fila y repetimos el proceso hasta llegar a la última fila de la imagen.
+%en este parrafo repetiste la palabra 4, muchas veces.. se podria reescribir de otra forma
+
+Para lograr esto debemos  tener cuidado de no procesar pixeles con los valores modificados de sus vecinos. Una solución a este problema es crear un vector del tamaño de una fila de la matriz en donde guardaremos los valores modificados de la imagen hasta que hayamos utilizado a los pixeles que se deben reemplazar en todas las cuentas en las que se vea implicado.
+Este vector es inicializado con los píxeles correspondientes a la primera fila de la imagen para evitar problemas en la primer iteración del ciclo cuando actualizamos la imagen.
+
+
+%\begin{figure}[ht!]
+%\centering
+%\includegraphics[width=90mm]{lena.bmp}
+%\caption{***Mostrar vector con la primer fila de la imagen***}
+%\end{figure}
+
+Luego de haber inicializado el vector, comenzamos con los ciclos para el procesamiento de los píxeles utilizando dos ciclos: un ciclo externo y un ciclo interno que es contenido por el primero.
+
+Al comenzar el ciclo externo, inicializamos los registros para manipular los datos que se van a utilizar en el ciclo interno. Estos datos son el ancho de la fila, que es nuestra referencia a cantidad de iteraciones a realizar en el ciclo interno, un puntero a la direccion de memoria más chica de todos los pixeles que vamos a utilizar, y un puntero al inicio del vector.
+
+Luego comienza a realizarse el ciclo interno.
+
+En este ciclo se procesan de a 4 pixeles por iteración, para las cuales se incrementa un puntero a la posición de memoria mas chica de los pixeles que voy a utilizar.
+
+Al comenzar el ciclo interno, utilizamos nueve registros xmm para guardar los grupos de cuatro pixeles de la siguiente forma:
+
+
+%\begin{figure}[ht!]
+%\centering
+%\includegraphics[width=90mm]lena.bmp}
+%\caption{*****INSERTE IMAGEN DE CORRESPONDENCIA CON LOS NUMEROS DE QUE REGISTRO ESTAN SIENDO UTILIZADOS******}
+%\end{figure}
+
+Una vez cargados los pixeles en los registros, procedemos a intercambiar los cuatro píxeles de la imagen original con cuatro pìxeles correspondientes al vector creado. Es decir, actualizamos el valor de los píxeles que ya terminamos de utilizar para ser utilizados en el futuro para realizar las cuentas de las iteraciones.
+
+Paso siguiente es duplicar el tamaño de las componentes de los píxeles en los registros xmm utilizados previamente. Como los registros ahora pasan a poder contener solamente dos pixeles, vamos a necesitar el doble de registros para poder guardar todos los pixeles necesarios.
+
+
+%\begin{figure}[ht!]
+%\centering
+%\includegraphics[width=90mm]{lena.bmp}
+%\caption{*****INSERTAR IMAGEN DE LOS PIXELES EN LOS REGISTROS UNA VEZ AUMENTADOS LOS TAMAÑOS DE LAS COMPONENTES DE CADA PIXEL*******************}
+%\end{figure}
+
+A continuación,realizamos las operaciones para calcular un pixel. Hacemos la sumatoria de las componentes de los pixeles, guardando el resultado en otro registro, transformamos ese resultado a punto flotante de presición simple para poder divirlas a todas a la vez y obtener el promedio. Una vez calculado, lo transformamos nuevamente a entero.
+
+%\begin{figure}[ht!]
+%\centering
+%\includegraphics[width=90mm]{lena.bmp}
+%\caption{********INSERTAR IMAGEN DEL PROCESO**************}
+%\end{figure}
+
+
+Una vez calculado el pixel, lo transformo a su tamaño original, y copio el pixel al vector creado al comienzo del código
+
+%
+%\begin{figure}[ht!]
+%\centering
+%\includegraphics[width=90mm]{lena.bmp}
+%\caption{*************INSERTAR IMAGEN DEL PROCESO*************}
+%\end{figure}
+
+
+Para calcular los otros tres pixeles, el procedimiento es similar al recién descrito, teniendo en cuenta la ubicación de los pixeles necesarios en los registros utilizados.
+
+Al finalizar el ciclo interno, estando aún dentro del ciclo externo, debemos procesar los ultimos dos pixeles de la fila iterada debido a que el ciclo solo procesa de a cuatro pixeles. Este procesamiento es análogo a una iteración del ciclo interno, pero manipulando con precaución los registros debido a que usamos menor cantidad de pixeles y de cantidad de registros xmm.
+
+Finalizado el procesamiento de estos dos pixeles, cambiamos la fila que vamos a iterar en el ciclo interno de la siguiente iteración del ciclo externo.
+
+El ciclo externo termina cuando no hay más filas de la imagen que procesar, dejando las ultimas dos filas de la imagen sin modificar, y las modificaciones de la anteúltima fila de la misma imagen en el vector creado por nosotros.
+
+Cuando termina de realizarse el ciclo externo, debemos copiar los datos del vector a la ultima fila de la imagen, para de esta forma completar de realizar la función

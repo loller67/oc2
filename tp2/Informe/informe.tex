@@ -1,0 +1,120 @@
+\documentclass[a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{charter}   % tipografia
+\usepackage{graphicx}
+\usepackage{wrapfig}
+%\usepackage{makeidx}
+
+%\usepackage{float}
+%\usepackage{amsmath, amsthm, amssymb}
+%\usepackage{amsfonts}
+%\usepackage{sectsty}
+%\usepackage{charter}
+%\usepackage{wrapfig}
+%\usepackage{listings}
+%\lstset{language=C}
+
+
+\input{codesnippet}
+\input{page.layout}
+% \setcounter{secnumdepth}{2}
+\usepackage{underscore}
+\usepackage{caratula}
+\usepackage{url}
+\usepackage{float}
+
+
+% ******************************************************** %
+%              TEMPLATE DE INFORME ORGA2 v0.1              %
+% ******************************************************** %
+% ******************************************************** %
+%                                                          %
+% ALGUNOS PAQUETES REQUERIDOS (EN UBUNTU):                 %
+% ========================================
+%                                                          %
+% texlive-latex-base                                       %
+% texlive-latex-recommended                                %
+% texlive-fonts-recommended                                %
+% texlive-latex-extra?                                     %
+% texlive-lang-spanish (en ubuntu 13.10)                   %
+% ******************************************************** %
+
+\begin{document}
+
+
+\thispagestyle{empty}
+\materia{Organización del Computador II}
+\submateria{Primer Cuatrimestre de 2015}
+\titulo{Trabajo Práctico II}
+\subtitulo{Modelo SIMD}
+\grupo{Grupo Crash Bash/Ps1}
+\integrante{Ituarte, Joaquin}{457/13}{joaquinituarte@gmail.com} % obligatorio 
+\integrante{Maddonni, Axel}{200 /14}{axel.maddonni@gmail.com} % obligatorio 
+\integrante{Oller, Luca}{667/13}{ollerrr@live.com} % obligatorio 
+
+\maketitle
+\newpage
+
+\thispagestyle{empty}
+\vfill
+
+\thispagestyle{empty}
+\vspace{3cm}
+\tableofcontents
+\newpage
+
+%\normalsize
+\newpage
+
+\section{Introducción}
+
+En este trabajo se presentan y comparan tres implementaciones, dos en Assembler y una en C,  para la realización de tres filtros de imágenes. Estos filtros son el filtro Blur, el filtro Merge y el filtro HSL.
+
+Las imágenes que utilizamos son múltiplos de cuatro y mayores a 16x16.
+
+El filtro Blur toma una imagen y la suaviza, el filtro Merge toma dos imágenes del mismo tamaño y las mezcla en una sola imagen, mientras que el filtro HSL convierte los píxeles RGB a HSL, una vez convertidos se los modifica y finalmente los píxeles regresan a RGB. 
+
+La primera parte del trabajo tratará de exponer y explicar el funcionamiento de cada una de las implementaciones en assembler de forma individual. Luego, desarrollaremos una comparación entre ellas analizando las ventajas y desventajas, exponiendo en qué casos es conveniente utilizar una u otra dependiendo del contexto de uso, cuáles son las causas y qué maneras hay de optimizarlas.
+
+Al finalizar las explicaciones, se detallarán además las conclusiones obtenidas y las problemáticas que se nos presentaron  en la realización del trabajo práctico.
+
+\newpage
+
+\section{Desarrollo} 
+
+\subsection{Blur}
+
+\input{blur}
+
+\newpage
+
+\subsection{Merge}
+
+\input{merge}
+
+\newpage
+
+\subsection{HSL}
+
+\input{hsl}
+
+\newpage
+
+\section{Resultados}
+
+\input{resultados}
+
+\newpage
+
+\section{Conclusiones}
+
+\paragraph{} Vimos que el conjunto de instrucciones de SSE puede utilizarse para sacar provecho de la paralelización de cómputos y el acceso a memoria de a bloques de datos contiguos. Observamos que en los casos que se logró procesar más de un dato a la vez el rendimiento del algoritmo fue mayor.
+
+\paragraph{} Además, observamos que el código de assembler generado por el compilador GCC, sin optimización, produce una gran cantidad de accesos a memoria al utilizar variables locales en la pila lo cual produce una penalización en el rendimiento del proceso. 
+
+\paragraph{} Las circunstancias por las cuales una medición de rendimiento puede diferir de otra pueden ser muy variadas. Es importante tener en cuenta una serie de medidas para reducir al mínimo posible el error cometido, algunas de ellas utilizadas y explicadas en la sección de experimentos. Probar por nuestra cuenta y ver resultados concisos nos hizo entender mejor como maneja el procesador este tipo de operaciones, y qué tener en cuenta al momento de diseñar un algoritmo, en este caso para resolver funciones que involucran datos multimedia.
+
+
+\end{document}
+

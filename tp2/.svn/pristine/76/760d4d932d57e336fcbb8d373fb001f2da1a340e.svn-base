@@ -1,0 +1,16 @@
+\subsubsection{Implementacion 1}
+
+\textbf{Explicacion Assembler}
+
+En esta implementación realizamos la implementación del filtro HSL, utilizando funciones escritas en C para la transformación de formatos del pixel.
+Para realizar esto, guardamos en el registro XMM0 los valores pasados como parámetro a la función corresponiente al dato a sumar a cada componente del pixel. Además, creamos un vector en donde vamos a guardar el resultado de llamar a la función para transformar un pixel a formato HSL (utilizando una función C ya implementada), y guardamos e los registros XMM8 y XMM10 los datos para comparar las componentes una vez realizada la suma y así corroborar que los valores del resultado estén dentro de los valores posibles del formato.
+******INSERTE IMAGEN DEL VECTOR Y LOS REGISTROS***********************
+Una vez realizados estos pasos previos, podemos realizar con mas facilidad las operaciones debidas a los pixeles iterando uno a uno todos los pixeles de la imagen.
+En cada iteración comenzamos transformando las componentes del pixel rgb a componentes HSL con la función implementada en C correspondiente, usando el vector creado por nosotros como contenedor del resultado.
+Una vez obtenido este resultado, lo cargamos en el registro XMM1 py le sumamos los datos correspondientes, que previamente habiamos guardado en XMM0. Luego, utilizando los registros XMM8 y XMM10 (los cuales tenian nuestros datos para realizar comparaciones), controlamos que los valores obtenidos sean validos y correctos, y en caso contrario corregirlos de la manera correspondiente.
+*****INSERTAR IMAGEN DEL USO DE REGISTROS****
+Una vez finalizadas estas operaciones, guardamos el resultado en nuestro vector y procedemos a volver a convertir las componentes HSL a componentes rgb utilizando la funcion C correspondiente, la cual guarda el resultado final del pixel en el dicho vector.
+Una vez terminadas todas las iteraciones, liberamos la memoria correspondiente a nuestro vector y terminamos la función.
+
+
+\subsubsection{Implementacion 2}

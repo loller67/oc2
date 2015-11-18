@@ -1,0 +1,58 @@
+\subsubsection{Implementacion 1}
+
+\textbf{Explicacion Assembler}
+
+En esta implementación realizamos la implementación del filtro HSL, utilizando funciones escritas en C para la transformación de formatos del pixel.
+
+Para realizar esto, guardamos en cada doubleWord del registro XMM0 los valores pasados como parámetro en la función, que corresponden al dato a sumar a cada componente del pixel. Además, creamos un vector en donde vamos a guardar el resultado de llamar a la función para transformar un pixel a formato HSL (utilizando una función C ya implementada).
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=90mm]{imagenes/hsl/hsl1_1.png}
+\caption{***}
+\end{figure}
+
+Una vez realizado esto, procedemos a realizar las operaciones debidas a los pixeles iterando uno a uno todos los pixeles de la imagen.
+
+En cada iteración comenzamos transformando las componentes del pixel rgb a componentes HSL con la función implementada en C correspondiente, usando el vector creado por nosotros como contenedor del resultado.
+
+Una vez obtenido este resultado, lo cargamos en el registro XMM1 y le sumamos los datos correspondientes, que previamente habiamos guardado en XMM0. Luego controlamos que los valores obtenidos sean validos y correctos según las fuciones dadas por la cátedra, y en caso contrario corregirlos de la manera correspondiente.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=90mm]{imagenes/hsl/hsl1_2.png}
+\caption{***}
+\end{figure}
+
+Una vez finalizadas estas operaciones, guardamos el resultado en nuestro vector y procedemos a volver a convertir las componentes HSL a componentes rgb utilizando la funcion C correspondiente, la cual guarda el resultado final del pixel en dicho vector.
+
+Una vez terminadas todas las iteraciones, liberamos la memoria correspondiente a nuestro vector y terminamos la función.
+
+\subsubsection{Implementacion 2}
+
+\textbf{Explicacion Assembler}
+
+En esta implementación realizamos el filtro HSL completamente en código assembler.
+
+Para eso, realizamos la misma implementación de suma que la primera implementación del filtro explicada anteriormente, utilizando un vector temporal para almacenar las componentes del pixel en formato HSL.
+
+%\begin{figure}[ht!]
+%\centering
+%\includegraphics[width=90mm]{imagenes/hsl/hsl2_1.png}
+%\caption{***}
+%\end{figure}
+
+Para realizar la conversión del formato rgb al formato HSL, transformamos el tamaño cada componente de byte a doubleword y las guardamos en el registro XMM0, los convertimos a valores en punto flotante y guardamos la componente de transparencia, dado que no se modifica, en el vector.
+*****imagen******
+Calculamos el máximo y el mínimo entre las componentes rgb del pixel y con estos valores procedemos a calcular la matiz (componente H), luego la luminosidad (componente L) y finalmente la saturación (componente S) según las funciones dadas por la cátedra. Como las funciones para calcular las componentes son condicionales, hemos decidido realizar las operaciones desde el último caso hasta el primero, preguntando si las condiciones se cumplen, y reemplazando el valor anterior en caso de cumplirse. Luego, Los resultados de estas operaciones son guardados en el vector.
+******imagen******
+Para realizar la conversión del formato HSL al formato rgb, necesitamos obtener algunos valores utilizando las fórmulas provistas por la cátedra, C, X y M, que los guardaremos en las partes bajas de XMM4, XMM5 y XMM6 respectivamente. A los valores C y X, junto con la componente de transparencia A guardada previamente en nuestro vector, los copiamos al registro XMM4 y XMM5  de la forma que muestra la imagen. Luego procedemos a calcular los valores en formato rgb según las funciones condicionales otorgadas por la cátedra, utilizando la misma lógica sobre las condiciones como se hizo anteriormente en la función para transformar de rgb a HSL. El resultado de esto es guardado en XMM4 y luego hacemos los calculos de escala (multiplicar todas las componentes por 255) y los convertimos a enteros.
+***Imagenes de el parrafo***
+Para finalizar, volvemos las componentes a su tamaño original en la parte baja de XMM4 y lo guardamos en nuestro vector.
+***imagen vector***********
+
+%\begin{figure}[ht!]
+%\centering
+%\includegraphics[width=90mm]{imagenes/hsl/hsl2_2.png}
+%\caption{******INSERTE IMAGEN DE REGISTROS y resultado ; xmm4 = XMM5 =  | C | 0 | X | A |*********}
+%\end{figure}

@@ -1,0 +1,66 @@
+\subsubsection{Implementacion 1}
+
+\textbf{Explicacion Assembler}
+
+
+En la primera implementación del filtro Merge, realizamos un solo ciclo en el cual iteramos de a cuatro píxeles, recorriendo toda una fila.
+
+Al llegar al final de una fila, se actualizan los punteros de las imágenes sumándole al puntero el tamaño de la fila, reiniciamos el offset, incrementamos el contador de filas y comparamos dicho contador con la cantidad total de filas para saber si terminamos de recorrer la imagen.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=90mm]{imagenes/merge/merge1_1.png}
+\caption{*************INSERTAR IMAGEN DE UNA FILA RECORRIDA DENTRO DE LA MATRIZ*************
+}
+\end{figure}
+
+Dentro del ciclo guardamos en dos registros xmm los cuatro píxeles de cada imagen. Luego desempaquetamos cada registro en otros dos registros para no perder información. Para volver a desempaquetar nuevamente y tener cada pixel ocupando un registro xmm. Luego los convertimos a float.
+
+%\begin{figure}[ht!]
+%\centering
+%\includegraphics[width=90mm]{lena.bmp}
+%\caption{*************INSERTAR IMAGEN DE LOS XMM CORRESPONDIENTES CON LAS LOS PIXELES*************}
+%\end{figure}
+
+Luego realizamos el producto del RGB del píxel por nuestro value, dejando intacto A, y en otro registro el mismo píxel por 1-value y sumamos los resultados. El siguiente paso es convertir a dword integer y los empaquetamos de dword a word y de word a byte para que el píxel recupere su valor original.
+
+%\begin{figure}[ht!]
+%\centering
+%\includegraphics[width=90mm]{lena.bmp}
+%\caption{*************INSERTAR IMAGEN DE LO QUE PASA CON RGB Y COMO EMPAQUETAMOS Y DESEMPAQUETAMOS*************
+*}
+%\end{figure}
+
+Vuelvo a guardar el pixel en memoria, avanzo a los próximos cuatro píxeles y como último paso me fijo si llegue el final de la fila para saber si tengo que actualizar el offset, los punteros y el contador.
+
+\subsubsection{Implementacion 2}
+
+\textbf{Explicacion Assembler}
+
+
+En la segunda implementación del filtro Merge se utiliza un ciclo, pero antes de inicializarlo, inicializamos un contador de filas y columnas , hacemos un Shuffle Packed Single(shufps) para tener 4 veces en el mismo registro el value y luego multiplicarle una máscara  para guardar v1 en un registro xmm y v2 en otro (convirtiéndolos a int previamente) y luego los empaquetamos para que sean int de 2 bytes.
+
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=90mm]{imagenes/merge/merge2_1.png}
+\caption{***}
+\end{figure}
+
+Ya dentro del ciclo lo que se hace es copiar cuatro píxeles de cada imagen en dos registros xmm. Se utilizan dos registros xmm auxiliares en los cuales copiamos los píxeles y aplicando una mascara nos guardamos A ya que no debe ser modificado. Finalmente se desempaqueta y guardamos los píxeles en cuatro registros xmm (dos pixeles en cada uno).
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=90mm]{imagenes/merge/merge2_2.png}
+\caption{***}
+\end{figure}
+
+Ahora comienza la parte de las operaciones, en la cual multiplicamos los registros de dos pixeles por v1 y realizamos lo mismo con esos registros por v2 guardándolos en otros registros. A continuación desempaquetamos para tener un pixel por registro, sumamos todos los xmm correspondientes y los dividimos por 256, los empaquetamos dos veces para que vuelvan a su tamaño original, aplicamos otra mascara para poner en 0 donde estaba el A modificado y luego reestablezco el A original de los píxeles que había guardado en el registro xmm auxiliar.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=90mm]{imagenes/merge/merge2_3.png}
+\caption{***}
+\end{figure}
+
+Luego de terminar con las operaciones, guardo en memoria los píxeles modificados avanzo el puntero 4 posiciones y me fijo si llego al final de la fila. En caso de llegar, Actualizo los punteros de las imágenes, avanzando una fila, reinicio el offset y avanzo el contador de filas, una vez que llego al final de las filas termino; si no terminé la fila vuelvo al ciclo y repito las operaciones con los píxeles siguientes.
